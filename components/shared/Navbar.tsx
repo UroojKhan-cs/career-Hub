@@ -1,4 +1,6 @@
-//  components/ Navbar.tsx
+//  components/ shared/ Navbar.tsx
+
+// components/shared/Navbar.tsx
 
 "use client";
 
@@ -23,37 +25,39 @@ export default function Navbar() {
     <header className="border-b bg-blue-50">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
-        
         {/* Logo + Search */}
-        <div className="flex items-center">
-            <Link
-                href="/"
-                className="text-xl font-bold tracking-tight text-indigo-600"
-            >
-                CareerHub
-            </Link>
+        <div className="flex min-w-0 items-center">
 
-            {/* Navbar Search */}
-            <div className="hidden ml-4 w-80 md:flex">
-                <div className="flex w-full items-center gap-2 rounded-lg border bg-white px-3 py-2">
-                    <Search className="h-4 w-4 text-gray-400" />
+          {/* Logo */}
+          <Link
+            href="/"
+            className="shrink-0 text-xl font-bold tracking-tight text-indigo-600"
+          >
+            CareerHub
+          </Link>
 
-                    <input
-                        type="text"
-                        placeholder="Search jobs, companies..."
-                        className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
-                    />
-                </div>
+          {/* Navbar Search */}
+          <div className="hidden w-64 lg:flex xl:w-80">
+            <div className="ml-4 flex w-full items-center gap-2 rounded-lg border bg-white px-3 py-2">
+              <Search className="h-4 w-4 shrink-0 text-gray-400" />
+
+              <input
+                type="text"
+                placeholder="Search jobs, companies..."
+                className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+              />
             </div>
+          </div>
+
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-gray-600 transition hover:text-indigo-600"
+              className="whitespace-nowrap text-sm font-medium text-gray-600 transition hover:text-indigo-600"
             >
               {link.label}
             </Link>
@@ -61,7 +65,8 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop Actions */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden shrink-0 items-center gap-2 lg:flex">
+
           <Button
             variant="ghost"
             nativeButton={false}
@@ -77,11 +82,14 @@ export default function Navbar() {
           >
             Get Started
           </Button>
+
         </div>
 
-        {/* Mobile Menu */}
-        <div className="md:hidden">
+        {/* Mobile / Tablet Menu */}
+        <div className="lg:hidden">
+
           <Sheet>
+
             <SheetTrigger
               render={
                 <Button
@@ -94,7 +102,10 @@ export default function Navbar() {
               <Menu className="h-6 w-6" />
             </SheetTrigger>
 
-            <SheetContent side="right" className="px-6">
+            <SheetContent
+              side="right"
+              className="px-6"
+            >
               <div className="flex flex-col gap-6 pt-8">
 
                 {/* Mobile Navigation */}
@@ -112,6 +123,7 @@ export default function Navbar() {
 
                 {/* Mobile Actions */}
                 <div className="flex flex-col gap-3">
+
                   <Button
                     variant="outline"
                     nativeButton={false}
@@ -122,16 +134,19 @@ export default function Navbar() {
 
                   <Button
                     nativeButton={false}
-                    render={<Link href="/register"/>}
+                    render={<Link href="/register" />}
                     className="bg-indigo-600 text-white hover:bg-indigo-700"
                   >
                     Get Started
                   </Button>
+
                 </div>
 
               </div>
             </SheetContent>
+
           </Sheet>
+
         </div>
 
       </div>

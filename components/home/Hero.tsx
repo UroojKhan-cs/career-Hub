@@ -13,7 +13,7 @@ export default function HeroPage() {
                         Find your next Opportunity
                     </h1>
 
-                    <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-gray-500 sm:text-lg">
+                    <p className="mx-auto mt-5 max-w-4xl text-base leading-7 text-gray-500 sm:text-lg">
                         Discover thousands of job openings from top companies
                         and find the opportunity that is right for you.
                     </p>
