@@ -1,8 +1,10 @@
 // components/ jobs/ JobCard.tsx
 
 import { Bookmark } from "lucide-react";
+import Link from "next/link";
 
 interface JobCardProps {
+  id: string;
   title: string;
   company: string;
   location: string;
@@ -13,6 +15,7 @@ interface JobCardProps {
 }
 
 export default function JobCard({
+  id,
   title,
   company,
   location,
@@ -72,9 +75,21 @@ export default function JobCard({
           {salary} / yr
         </p>
 
-        <p className="text-sm text-gray-400">
+        <div className="flex items-center gap-4">
+
+          <p className="text-sm text-gray-400">
           {posted}
         </p>
+
+        <Link
+          href={`/jobs/${id}`}
+          className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
+        >
+          View Details
+        </Link>
+
+        </div>
+
       </div>
     </div>
   );

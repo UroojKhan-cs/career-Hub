@@ -1,0 +1,171 @@
+// data/jobs.ts
+
+export const jobs = [
+  {
+    id: "1",
+    title: "Senior Frontend Developer",
+    company: "TechFlow Solutions",
+    location: "San Francisco, CA (Hybrid)",
+    salary: "$140k - $170k",
+    posted: "2h ago",
+
+    jobType: "Full-time",
+    experience: "Senior Level",
+    datePosted: "August 20, 2026",
+
+    skills: ["React", "TypeScript", "Next.js", "Tailwind CSS"],
+
+    about:
+      "We are looking for a Senior Frontend Developer to join our growing engineering team. You will work closely with designers and backend engineers to build modern, scalable, and user-friendly web applications.",
+
+    responsibilities: [
+      "Build and maintain responsive web applications using React and Next.js.",
+      "Collaborate with designers and backend engineers.",
+      "Write clean, reusable, and maintainable TypeScript code.",
+      "Review code and help improve development practices.",
+    ],
+
+    requirements: [
+      "3+ years of frontend development experience.",
+      "Strong knowledge of React and TypeScript.",
+      "Experience with Next.js.",
+      "Good understanding of responsive web design.",
+    ],
+
+    companyInfo: {
+      description:
+        "TechFlow Solutions is a technology company focused on building modern digital products and scalable software solutions.",
+      industry: "Technology",
+      companySize: "201-500 employees",
+      website: "www.techflowsolutions.com",
+    },
+
+    featured: true,
+  },
+
+  {
+    id: "2",
+    title: "Software Engineer",
+    company: "InnovateX",
+    location: "New York, NY",
+    salary: "$120k - $155k",
+    posted: "5h ago",
+
+    jobType: "Full-time",
+    experience: "Mid Level",
+    datePosted: "August 20, 2026",
+
+    skills: ["Next.js", "Node.js", "TypeScript", "PostgreSQL"],
+
+    about:
+      "InnovateX is looking for a Software Engineer to join our engineering team and help build reliable, scalable web applications. You will work across the frontend and backend to deliver high-quality software products.",
+
+    responsibilities: [
+      "Develop and maintain web applications using Next.js and Node.js.",
+      "Build reusable frontend and backend components.",
+      "Work with databases and APIs to support application features.",
+      "Collaborate with other developers to solve technical problems.",
+    ],
+
+    requirements: [
+      "2+ years of software development experience.",
+      "Strong knowledge of JavaScript or TypeScript.",
+      "Experience with Next.js and Node.js.",
+      "Basic understanding of PostgreSQL and REST APIs.",
+    ],
+
+    companyInfo: {
+      description:
+        "InnovateX is a software company that develops modern technology solutions for businesses and digital platforms.",
+      industry: "Software Development",
+      companySize: "51-200 employees",
+      website: "www.innovatex.com",
+    },
+
+    featured: false,
+  },
+
+  {
+    id: "3",
+    title: "Product Designer",
+    company: "Creative Labs",
+    location: "Remote",
+    salary: "$90k - $125k",
+    posted: "1d ago",
+
+    jobType: "Full-time",
+    experience: "Mid Level",
+    datePosted: "August 19, 2026",
+
+    skills: ["Figma", "UI/UX", "Design Systems", "Prototyping"],
+
+    about:
+      "Creative Labs is seeking a Product Designer to create intuitive and engaging digital experiences. You will work closely with product managers and developers to transform ideas into user-friendly products.",
+
+    responsibilities: [
+      "Design user interfaces and experiences for web applications.",
+      "Create wireframes, prototypes, and high-fidelity designs in Figma.",
+      "Collaborate with developers and product managers.",
+      "Maintain and improve the company's design system.",
+    ],
+
+    requirements: [
+      "2+ years of product or UI/UX design experience.",
+      "Strong knowledge of Figma.",
+      "Good understanding of user-centered design principles.",
+      "Experience creating responsive web designs.",
+    ],
+
+    companyInfo: {
+      description:
+        "Creative Labs is a digital design company focused on creating meaningful and user-friendly digital experiences.",
+      industry: "Design & Technology",
+      companySize: "51-200 employees",
+      website: "www.creativelabs.com",
+    },
+
+    featured: false,
+  },
+
+  {
+    id: "4",
+    title: "Backend Engineer",
+    company: "DataFlow",
+    location: "Austin, TX",
+    salary: "$115k - $150k",
+    posted: "2d ago",
+
+    jobType: "Full-time",
+    experience: "Mid Level",
+    datePosted: "August 18, 2026",
+
+    skills: ["Node.js", "PostgreSQL", "Express.js", "REST API"],
+
+    about:
+      "DataFlow is looking for a Backend Engineer to develop scalable server-side applications and reliable APIs. You will work with frontend developers and other engineers to build high-performance software systems.",
+
+    responsibilities: [
+      "Develop and maintain backend services using Node.js.",
+      "Design and build RESTful APIs.",
+      "Work with PostgreSQL databases and optimize queries.",
+      "Collaborate with frontend developers to integrate APIs.",
+    ],
+
+    requirements: [
+      "2+ years of backend development experience.",
+      "Strong knowledge of Node.js and JavaScript.",
+      "Experience with PostgreSQL databases.",
+      "Understanding of REST APIs and backend architecture.",
+    ],
+
+    companyInfo: {
+      description:
+        "DataFlow provides data-driven software solutions and scalable backend systems for modern businesses.",
+      industry: "Technology",
+      companySize: "201-500 employees",
+      website: "www.dataflow.com",
+    },
+
+    featured: false,
+  },
+];
