@@ -81,39 +81,29 @@ export default function JobPagination({
       </div>
 
       {/* ================= MOBILE ================= */}
-      <div className="flex items-center gap-1.5 sm:hidden">
-        
-        {Array.from(
-          { length: Math.min(3, totalPages) },
-          (_, index) => {
-            const page = Math.min(
-              currentPage + index,
-              totalPages
-            );
-            
-            return (
-              <Link
-                key={page}
-                href={`/jobs?page=${page}`}
-                className={`flex h-9 w-9 items-center justify-center rounded-lg border text-sm transition ${
-                  currentPage === page
-                    ? "border-indigo-600 bg-indigo-600 text-white"
-                    : "bg-white text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {page}
-              </Link>
-            );
-          }
-        )}
-        
-        {currentPage + 2 < totalPages && (
-          <span className="flex h-9 w-7 items-center justify-center text-gray-500">
-            ...
-          </span>
-        )}
+<div className="flex items-center gap-1.5 sm:hidden">
+  {Array.from(
+    { length: totalPages },
+    (_, index) => {
+      const page = index + 1;
 
-      </div>
+      return (
+        <Link
+          key={page}
+          href={`/jobs?page=${page}`}
+          className={`flex h-9 w-9 items-center justify-center rounded-lg border text-sm transition ${
+            currentPage === page
+              ? "border-indigo-600 bg-indigo-600 text-white"
+              : "bg-white text-gray-600 hover:bg-gray-100"
+          }`}
+        >
+          {page}
+        </Link>
+      );
+    }
+  )}
+</div>
+      
 
       {/* Next */}
       <Link

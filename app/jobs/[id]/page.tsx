@@ -1,5 +1,7 @@
 // app/ jobs/ [id]/ pages. tsx : Dynamic data
 
+import type { Metadata } from "next";
+
 import { jobs } from "@/data/jobs";
 import { notFound } from "next/navigation";
 import {
@@ -21,6 +23,27 @@ import Link from "next/link";
 interface JobDetailsPageProps {
   params: Promise<{ id: string }>;
 }
+
+export async function generateMetadata({
+  params,
+}: JobDetailsPageProps): Promise<Metadata> {
+  const { id } = await params;
+
+  const job = jobs.find((job) => job.id === id);
+
+  if (!job) {
+    return {
+      title: "Job Not Found | CareerHub",
+      description: "The requested job could not be found.",
+    };
+  }
+
+  return {
+    title: `${job.title} | CareerHub`,
+    description: `${job.title} at ${job.company} in ${job.location}. Find details about this job opportunity on CareerHub.`,
+  };
+}
+
 
 export function generateStaticParams() {
   return jobs.map((job) => ({

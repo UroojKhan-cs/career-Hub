@@ -1,9 +1,11 @@
 // components/ home/ JobCard.tsx
 
 import { MapPin } from "lucide-react";
+import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 
 interface JobCardProps {
+    id: string;
     title: string;
     company: string;
     location: string;
@@ -13,6 +15,7 @@ interface JobCardProps {
 }
 
 export default function JobCard({
+    id,
     title,
     company,
     location,
@@ -59,9 +62,9 @@ export default function JobCard({
                     </div>
 
                     {/* View Details */}
-                    <a href="/jobs" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+                    <Link href={`/jobs/${id}`} className="text-sm font-semibold text-indigo-600 hover:text-indigo-700">
                         View Details
-                    </a>
+                    </Link>
                 </div>
             </CardContent>
         </Card>

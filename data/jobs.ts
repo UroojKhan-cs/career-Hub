@@ -11,6 +11,8 @@ export const jobs = [
 
     jobType: "Full-time",
     experience: "Senior Level",
+    category: "Engineering",
+    workMode: "On-site",
     datePosted: "August 20, 2026",
 
     skills: ["React", "TypeScript", "Next.js", "Tailwind CSS"],
@@ -53,6 +55,8 @@ export const jobs = [
 
     jobType: "Full-time",
     experience: "Mid Level",
+    category: "Engineering",
+    workMode: "Hybrid",
     datePosted: "August 20, 2026",
 
     skills: ["Next.js", "Node.js", "TypeScript", "PostgreSQL"],
@@ -93,8 +97,10 @@ export const jobs = [
     salary: "$90k - $125k",
     posted: "1d ago",
 
-    jobType: "Full-time",
+    jobType: "Part-Time",
     experience: "Mid Level",
+    category: "Design",
+    workMode: "Remote",
     datePosted: "August 19, 2026",
 
     skills: ["Figma", "UI/UX", "Design Systems", "Prototyping"],
@@ -135,8 +141,10 @@ export const jobs = [
     salary: "$115k - $150k",
     posted: "2d ago",
 
-    jobType: "Full-time",
+    jobType: "Contract",
     experience: "Mid Level",
+    category: "Engineering",
+    workMode: "On-site",
     datePosted: "August 18, 2026",
 
     skills: ["Node.js", "PostgreSQL", "Express.js", "REST API"],
@@ -168,4 +176,176 @@ export const jobs = [
 
     featured: false,
   },
+
+  {
+  id: "5",
+  title: "Frontend Developer",
+  company: "WebWorks",
+  location: "Remote",
+  salary: "$85k - $110k",
+  posted: "3d ago",
+
+  jobType: "Full-time",
+  experience: "Entry Level",
+  category: "Engineering",
+  workMode: "Remote",
+  datePosted: "August 17, 2026",
+
+  skills: ["React", "JavaScript", "Tailwind CSS"],
+
+  about:
+    "WebWorks is looking for a Frontend Developer to help build responsive and user-friendly web applications.",
+
+  responsibilities: [
+    "Build responsive user interfaces using React.",
+    "Collaborate with designers and developers.",
+    "Write reusable frontend components.",
+    "Fix bugs and improve application performance.",
+  ],
+
+  requirements: [
+    "1+ years of frontend development experience.",
+    "Good knowledge of React and JavaScript.",
+    "Understanding of responsive design.",
+  ],
+
+  companyInfo: {
+    description:
+      "WebWorks creates modern web applications and digital experiences for businesses.",
+    industry: "Web Development",
+    companySize: "51-200 employees",
+    website: "www.webworks.com",
+  },
+
+  featured: false,
+},
+
+{
+  id: "6",
+  title: "Marketing Manager",
+  company: "GrowthHub",
+  location: "Chicago, IL",
+  salary: "$80k - $105k",
+  posted: "4d ago",
+
+  jobType: "Part-time",
+  experience: "Mid Level",
+  category: "Marketing",
+  workMode: "Hybrid",
+  datePosted: "August 16, 2026",
+
+  skills: ["Marketing", "SEO", "Analytics"],
+
+  about:
+    "GrowthHub is looking for a Marketing Manager to lead digital marketing campaigns and grow our online presence.",
+
+  responsibilities: [
+    "Plan and manage digital marketing campaigns.",
+    "Analyze campaign performance.",
+    "Work with content and design teams.",
+    "Develop SEO strategies.",
+  ],
+
+  requirements: [
+    "2+ years of marketing experience.",
+    "Knowledge of SEO and digital marketing.",
+    "Strong analytical and communication skills.",
+  ],
+
+  companyInfo: {
+    description:
+      "GrowthHub helps businesses grow through modern digital marketing strategies.",
+    industry: "Marketing",
+    companySize: "51-200 employees",
+    website: "www.growthhub.com",
+  },
+
+  featured: false,
+},
+
+{
+  id: "7",
+  title: "UI/UX Designer",
+  company: "PixelCraft",
+  location: "Remote",
+  salary: "$75k - $100k",
+  posted: "5d ago",
+
+  jobType: "Remote",
+  experience: "Senior Level",
+  category: "Design",
+  workMode: "Remote",
+  datePosted: "August 15, 2026",
+
+  skills: ["Figma", "UI/UX", "Prototyping"],
+
+  about:
+    "PixelCraft is seeking a UI/UX Designer to create simple, intuitive, and engaging digital experiences.",
+
+  responsibilities: [
+    "Create wireframes and prototypes.",
+    "Design user-friendly interfaces.",
+    "Collaborate with developers.",
+    "Improve existing product experiences.",
+  ],
+
+  requirements: [
+    "2+ years of UI/UX design experience.",
+    "Strong knowledge of Figma.",
+    "Understanding of user-centered design.",
+  ],
+
+  companyInfo: {
+    description:
+      "PixelCraft is a digital design studio focused on creating modern user experiences.",
+    industry: "Design",
+    companySize: "11-50 employees",
+    website: "www.pixelcraft.com",
+  },
+
+  featured: false,
+},
+
+{
+  id: "8",
+  title: "Data Scientist",
+  company: "DataMind",
+  location: "Boston, MA",
+  salary: "$105k - $140k",
+  posted: "6d ago",
+
+  jobType: "Full-time",
+  experience: "Senior Level",
+  category: "Engineering",
+  workMode: "Hybrid",
+  datePosted: "August 14, 2026",
+
+  skills: ["Python", "Machine Learning", "SQL"],
+
+  about:
+    "DataMind is looking for a Data Scientist to analyze data and develop machine learning solutions.",
+
+  responsibilities: [
+    "Analyze large datasets.",
+    "Build machine learning models.",
+    "Create data-driven solutions.",
+    "Collaborate with engineering teams.",
+  ],
+
+  requirements: [
+    "3+ years of data science experience.",
+    "Strong knowledge of Python.",
+    "Experience with SQL and machine learning.",
+  ],
+
+  companyInfo: {
+    description:
+      "DataMind develops data-driven solutions using analytics and machine learning.",
+    industry: "Data Science",
+    companySize: "201-500 employees",
+    website: "www.datamind.com",
+  },
+
+  featured: false,
+},
 ];
