@@ -5,6 +5,7 @@ import "./globals.css";
 
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import AuthSessionProvider from "@/components/SessionProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -34,15 +35,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
       <body className="min-h-full flex flex-col" cz-shortcut-listen="true">
+
+        <AuthSessionProvider>
         
         <div className="overflow-hidden">
+          
+            <Navbar />
 
-          <Navbar />
+            {children}
 
-          {children}
-
-          <Footer />
+            <Footer />
+          
         </div>
+
+        </AuthSessionProvider>
         
         </body>
     </html>

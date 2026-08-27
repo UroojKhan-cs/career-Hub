@@ -9,8 +9,13 @@ import Image from "next/image";
 
 export default function SignupPage() {
 
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [termsAccepted, setTermsAccepted] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -41,6 +46,11 @@ export default function SignupPage() {
             return;
         }
 
+        if (!passwordRules.number) {
+            setError("Password must contain at least one number.");
+            return;
+        }
+
         if(!passwordRules.special) {
             setError("Password must contain at least one special character.");
             return;
@@ -51,12 +61,28 @@ export default function SignupPage() {
             return;
         }
 
+        if (!termsAccepted) {
+            setError("Please accept the Terms of Service and Privacy Policy.");
+            return;
+        }
+
         setLoading(true);
 
-        setTimeout( () => {
-            setLoading(false)
-            setSuccess("Account created successfully!");
-        }, 1500)
+        const user ={
+            name,
+            email,
+            password,
+            role: "user",
+
+            phone: "",
+            currentTitle: "",
+            bio: "",
+            skills: [],
+            resume: "",
+        };
+        localStorage.setItem("careerhubUser", JSON.stringify(user));
+        setLoading(false);
+        setSuccess("Account created successfully!");
     }
 
     return (
@@ -151,8 +177,12 @@ export default function SignupPage() {
 
                                 <input 
                                     id="name"
+                                    name="name"
                                     type="text"
                                     placeholder="Jane Doe"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
                                     className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                                 />
                             </div>
@@ -168,8 +198,12 @@ export default function SignupPage() {
 
                                 <input
                                     id="email"
+                                    name="email"
                                     type="email"
                                     placeholder="johndoe@gmail.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
                                     className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                                 />
                             </div>
@@ -276,6 +310,8 @@ export default function SignupPage() {
                             <label className="flex items-start gap-3 text-sm text-gray-600">
                                 <input
                                 type="checkbox"
+                                checked={termsAccepted}
+                                onChange={(e) => setTermsAccepted(e.target.checked)}
                                 className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-indigo-600"
                                 />
 

@@ -2,6 +2,7 @@
 
 "use client";
 
+// import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Briefcase } from "lucide-react";
@@ -12,6 +13,9 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
+
 
   const [errors, setErrors] = useState<{
     email?: string;
@@ -44,21 +48,45 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0;
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const isValid = validateForm();
-
-    if (!isValid) {
+    if (!validateForm()) {
       return;
     }
 
     setLoading(true);
+    setError("");
 
-    // Temporary login simulation
-    setTimeout(() => {
+    const storedUser = localStorage.getItem("careerhubUser")
+
+    if(!storedUser) {
+      setLoading(false)
+      setError("No account found. Please create an account first.");
+      return;
+    }
+
+    const user = JSON.parse(storedUser);
+    if (user.email !== email || user.password !== password){
       setLoading(false);
-    }, 1500);
+      setError("Incorrect email or password.");
+      return;
+    }
+
+    // const result = await signIn("credentials", {
+    //   email,
+    //   password,
+    //   redirect: false,
+    // // });
+
+    // setLoading(false);
+
+    // if (result?.error) {
+    //   setError("Unable to sign in.");
+    //   return;
+    // }
+
+    window.location.href = "/dashboard";
   }
 
   return (
@@ -201,6 +229,7 @@ export default function LoginPage() {
                     }`}
                   />
 
+
                   <button
                     type="button"
                     onClick={() =>
@@ -228,6 +257,13 @@ export default function LoginPage() {
                   </p>
                 )}
               </div>
+
+              {/* Authentication Error */}
+              {error && (
+                <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                  {error}
+                </div>
+              )}
 
               {/* Remember + Forgot */}
               <div className="flex items-center justify-between gap-4">
