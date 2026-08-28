@@ -1,33 +1,133 @@
 // app/ reset-password/ page.tsx
 
+
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Briefcase, Eye, EyeOff, Check, CircleAlert } from "lucide-react";
+import {
+  Briefcase,
+  Eye,
+  EyeOff,
+  Check,
+  CircleAlert,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ResetPasswordPage() {
+  const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const passwordsMatch =
-    confirmPassword.length === 0 || password === confirmPassword;
+  const [email, setEmail] = useState("");
 
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  // Password validation
   const hasMinLength = password.length >= 8;
   const hasUppercase = /[A-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
+  const hasSpecial = /[^A-Za-z0-9]/.test(password);
+
+  const passwordsMatch =
+    confirmPassword.length === 0 || password === confirmPassword;
+
+  // Get reset email
+  useEffect(() => {
+    const resetEmail = localStorage.getItem("careerhubResetEmail");
+
+    if (!resetEmail) {
+      router.push("/forgot-password");
+      return;
+    }
+
+    setEmail(resetEmail);
+  }, [router]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
+    setError("");
+    setSuccess("");
+
+    // Validate password
+    if (!hasMinLength) {
+      setError("Password must be at least 8 characters long.");
       return;
     }
 
-    console.log("Password reset successfully");
+    if (!hasUppercase) {
+      setError("Password must contain at least one uppercase letter.");
+      return;
+    }
+
+    if (!hasNumber) {
+      setError("Password must contain at least one number.");
+      return;
+    }
+
+    if (!hasSpecial) {
+      setError("Password must contain at least one special character.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+
+    // Get all users
+    const storedUsers = localStorage.getItem("careerhubUsers");
+
+    if (!storedUsers) {
+      setLoading(false);
+      setError("No accounts found.");
+      return;
+    }
+
+    const users = JSON.parse(storedUsers);
+
+    // Find user
+    const userIndex = users.findIndex(
+      (user: { email: string }) =>
+        user.email.toLowerCase() === email.toLowerCase()
+    );
+
+    // User not found
+    if (userIndex === -1) {
+      setLoading(false);
+      setError("Account not found.");
+      return;
+    }
+
+    // Update password
+    users[userIndex].password = password;
+
+    // Save updated users
+    localStorage.setItem(
+      "careerhubUsers",
+      JSON.stringify(users)
+    );
+
+    // Remove temporary reset email
+    localStorage.removeItem("careerhubResetEmail");
+
+    setLoading(false);
+    setSuccess("Password reset successfully!");
+
+    // Go to login after short delay
+    setTimeout(() => {
+      router.push("/login");
+    }, 1000);
   }
 
   return (
@@ -56,6 +156,20 @@ export default function ResetPasswordPage() {
           </p>
 
         </div>
+
+        {/* Success */}
+        {success && (
+          <div className="mt-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+            {success}
+          </div>
+        )}
+
+        {/* Error */}
+        {error && (
+          <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            {error}
+          </div>
+        )}
 
         {/* Form */}
         <form
@@ -90,7 +204,9 @@ export default function ResetPasswordPage() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 aria-label={
-                  showPassword ? "Hide password" : "Show password"
+                  showPassword
+                    ? "Hide password"
+                    : "Show password"
                 }
               >
                 {showPassword ? (
@@ -118,10 +234,16 @@ export default function ResetPasswordPage() {
 
               <input
                 id="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
+                type={
+                  showConfirmPassword
+                    ? "text"
+                    : "password"
+                }
                 placeholder="Confirm new password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) =>
+                  setConfirmPassword(e.target.value)
+                }
                 required
                 className={`w-full rounded-lg border bg-white px-4 py-3 pr-12 text-sm outline-none transition focus:ring-2 ${
                   !passwordsMatch
@@ -133,7 +255,9 @@ export default function ResetPasswordPage() {
               <button
                 type="button"
                 onClick={() =>
-                  setShowConfirmPassword(!showConfirmPassword)
+                  setShowConfirmPassword(
+                    !showConfirmPassword
+                  )
                 }
                 className={`absolute right-3 top-1/2 -translate-y-1/2 ${
                   !passwordsMatch
@@ -155,7 +279,7 @@ export default function ResetPasswordPage() {
 
             </div>
 
-            {/* Error */}
+            {/* Password mismatch */}
             {!passwordsMatch && (
               <p className="mt-2 flex items-center gap-1 text-xs text-red-600">
                 <CircleAlert className="h-3.5 w-3.5" />
@@ -237,6 +361,27 @@ export default function ResetPasswordPage() {
 
               </div>
 
+              {/* Special Character */}
+              <div className="flex items-center gap-2 text-sm">
+
+                {hasSpecial ? (
+                  <Check className="h-4 w-4 text-green-600" />
+                ) : (
+                  <span className="h-4 w-4 rounded-full border border-gray-300" />
+                )}
+
+                <span
+                  className={
+                    hasSpecial
+                      ? "text-green-700"
+                      : "text-gray-500"
+                  }
+                >
+                  Contains at least one special character
+                </span>
+
+              </div>
+
             </div>
 
           </div>
@@ -245,14 +390,16 @@ export default function ResetPasswordPage() {
           <button
             type="submit"
             disabled={
+              loading ||
               !hasMinLength ||
               !hasUppercase ||
               !hasNumber ||
+              !hasSpecial ||
               password !== confirmPassword
             }
             className="w-full rounded-lg bg-indigo-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Reset Password
+            {loading ? "Resetting Password..." : "Reset Password"}
           </button>
 
         </form>
@@ -274,3 +421,4 @@ export default function ResetPasswordPage() {
     </main>
   );
 }
+

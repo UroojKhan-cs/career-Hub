@@ -52,26 +52,50 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!validateForm()) {
-      return;
+        return;
     }
 
     setLoading(true);
     setError("");
 
-    const storedUser = localStorage.getItem("careerhubUser")
+    // Get all registered users
+    const storedUsers = localStorage.getItem("careerhubUsers");
 
-    if(!storedUser) {
-      setLoading(false)
-      setError("No account found. Please create an account first.");
-      return;
+    if (!storedUsers) {
+        setLoading(false);
+        setError("No account found. Please create an account first.");
+        return;
     }
 
-    const user = JSON.parse(storedUser);
-    if (user.email !== email || user.password !== password){
-      setLoading(false);
-      setError("Incorrect email or password.");
-      return;
+    const users = JSON.parse(storedUsers);
+
+    // Find user by email
+    const user = users.find(
+        (user: { email: string; password: string }) =>
+            user.email.toLowerCase() === email.toLowerCase()
+    );
+
+    // User not found
+    if (!user) {
+        setLoading(false);
+        setError("Incorrect email or password.");
+        return;
     }
+
+    // Check password
+    if (user.password !== password) {
+        setLoading(false);
+        setError("Incorrect email or password.");
+        return;
+    }
+
+    // Save currently logged-in user
+    localStorage.setItem(
+        "careerhubUser",
+        JSON.stringify(user)
+    );
+
+    setLoading(false);
 
     // const result = await signIn("credentials", {
     //   email,

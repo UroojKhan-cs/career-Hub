@@ -1,5 +1,6 @@
 // app/ forgot-password/ page.tsx
 
+
 "use client";
 
 import { useState } from "react";
@@ -8,24 +9,50 @@ import Link from "next/link";
 import { Briefcase } from "lucide-react";
 
 export default function ForgotPasswordPage() {
-
-    const router = useRouter();
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    setLoading(true);
-    setMessage("");
+    setError("");
 
-    // Temporary simulation
+    const enteredEmail = email.trim().toLowerCase();
+
+    // Get registered users
+    const storedUsers = localStorage.getItem("careerhubUsers");
+
+    if (!storedUsers) {
+      setError("No account found with this email address.");
+      return;
+    }
+
+    const users = JSON.parse(storedUsers);
+
+    // Check whether email exists
+    const userExists = users.some(
+      (user: { email: string }) =>
+        user.email.toLowerCase() === enteredEmail
+    );
+
+    if (!userExists) {
+      setError("No account found with this email address.");
+      return;
+    }
+
+    setLoading(true);
+
+    // Save email temporarily for reset-password page
+    localStorage.setItem("careerhubResetEmail", enteredEmail);
+
+    // Simulate sending reset link
     setTimeout(() => {
       setLoading(false);
       router.push("/reset-password");
-    }, 1500);
+    }, 1000);
   }
 
   return (
@@ -60,6 +87,7 @@ export default function ForgotPasswordPage() {
         <form
           onSubmit={handleSubmit}
           className="mt-8 space-y-5"
+          noValidate
         >
 
           {/* Email */}
@@ -77,20 +105,27 @@ export default function ForgotPasswordPage() {
               name="email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError("");
+              }}
               placeholder="name@company.com"
               required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+              className={`w-full rounded-lg border bg-white px-4 py-3 text-sm outline-none transition focus:ring-2 ${
+                error
+                  ? "border-red-500 focus:border-red-500 focus:ring-red-100"
+                  : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-100"
+              }`}
             />
 
-          </div>
+            {/* Error */}
+            {error && (
+              <p className="mt-2 text-sm text-red-600">
+                {error}
+              </p>
+            )}
 
-          {/* Success Message */}
-          {message && (
-            <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-              {message}
-            </div>
-          )}
+          </div>
 
           {/* Submit */}
           <button
@@ -120,3 +155,4 @@ export default function ForgotPasswordPage() {
     </main>
   );
 }
+

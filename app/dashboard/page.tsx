@@ -1,4 +1,5 @@
-// app/ dashboard/ page.tsx
+
+// app/dashboard/page.tsx
 
 "use client";
 
@@ -14,6 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 type User = {
+  id?: string;
   name: string;
   email: string;
   password: string;
@@ -26,7 +28,6 @@ type User = {
 };
 
 export default function DashboardPage() {
-
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
@@ -43,11 +44,51 @@ export default function DashboardPage() {
   }, [router]);
 
   function handleSaveChanges() {
-    if(!user) return;
+    if (!user) return;
 
+    // --------------------------------
+    // 1. Update currently logged-in user
+    // --------------------------------
+    localStorage.setItem(
+      "careerhubUser",
+      JSON.stringify(user)
+    );
 
-    localStorage.setItem("careerhubUser", JSON.stringify(user));
-    alert ("Profile updated successfully")
+    // --------------------------------
+    // 2. Get all registered users
+    // --------------------------------
+    const storedUsers = localStorage.getItem("careerhubUsers");
+
+    if (!storedUsers) {
+      alert("Profile updated successfully");
+      return;
+    }
+
+    const users: User[] = JSON.parse(storedUsers);
+
+    // --------------------------------
+    // 3. Find current user and update
+    // --------------------------------
+    const updatedUsers = users.map((existingUser) => {
+      if (
+        existingUser.email.toLowerCase() ===
+        user.email.toLowerCase()
+      ) {
+        return user;
+      }
+
+      return existingUser;
+    });
+
+    // --------------------------------
+    // 4. Save all users again
+    // --------------------------------
+    localStorage.setItem(
+      "careerhubUsers",
+      JSON.stringify(updatedUsers)
+    );
+
+    alert("Profile updated successfully");
   }
 
   if (!user) {
@@ -133,33 +174,33 @@ export default function DashboardPage() {
           {/* Profile Content Grid */}
           <div className="mt-6 grid gap-6 lg:grid-cols-2">
 
-              {/* Personal Information */}
-              <PersonalInformation
-                name={user.name}
-                email={user.email}
-                phone={user.phone}
-                onChange={({ name, email, phone }) =>
-                  setUser({
-                    ...user,
-                    name,
-                    email,
-                    phone,
-                  })
-                }
-              />
+            {/* Personal Information */}
+            <PersonalInformation
+              name={user.name}
+              email={user.email}
+              phone={user.phone}
+              onChange={({ name, email, phone }) =>
+                setUser({
+                  ...user,
+                  name,
+                  email,
+                  phone,
+                })
+              }
+            />
 
-              {/* Professional Summary */}
-              <ProfessionalSummary
-                currentTitle={user.currentTitle}
-                bio={user.bio}
-                onChange={({ currentTitle, bio }) =>
-                  setUser({
-                    ...user,
-                    currentTitle,
-                    bio,
-                  })
-                }
-              />
+            {/* Professional Summary */}
+            <ProfessionalSummary
+              currentTitle={user.currentTitle}
+              bio={user.bio}
+              onChange={({ currentTitle, bio }) =>
+                setUser({
+                  ...user,
+                  currentTitle,
+                  bio,
+                })
+              }
+            />
 
           </div>
 
@@ -176,7 +217,7 @@ export default function DashboardPage() {
                 })
               }
             />
-              
+
             {/* Core Skills */}
             <CoreSkills
               skills={user.skills}
@@ -187,12 +228,11 @@ export default function DashboardPage() {
                 })
               }
             />
-            
 
           </div>
 
         </section>
-        
+
       </div>
     </main>
   );

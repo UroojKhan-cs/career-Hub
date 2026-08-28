@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 
 import { jobs } from "@/data/jobs";
 import { notFound } from "next/navigation";
+import ApplyButton from "@/components/jobs/ApplyButton";
+
 import {
   Bookmark,
   Building2,
@@ -143,12 +145,12 @@ export default async function JobDetailsPage({
                 Save
               </button>
 
-              <button
-                type="button"
-                className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-blue-200 transition hover:bg-blue-700"
-              >
-                Apply Now
-              </button>
+              <ApplyButton
+                jobId={job.id}
+                jobTitle={job.title}
+                company={job.company}
+              />
+
             </div>
           </div>
         </div>
@@ -383,12 +385,13 @@ export default async function JobDetailsPage({
                 {job.company}.
               </p>
 
-              <button
-                type="button"
-                className="mt-5 w-full rounded-xl bg-white px-4 py-3 text-sm font-bold text-blue-600 transition hover:bg-blue-50"
-              >
-                Apply for this job
-              </button>
+              <div className="mt-5">
+                <ApplyButton
+                  jobId={job.id}
+                  jobTitle={job.title}
+                  company={job.company}
+                />
+              </div>
             </div>
           </aside>
         </div>

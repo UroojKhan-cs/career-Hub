@@ -77,7 +77,7 @@ export default function Navbar() {
 
           <Button
             nativeButton={false}
-            render={<Link href="/register" />}
+            render={<Link href="/signup" />}
             className="bg-indigo-600 text-white hover:bg-indigo-700"
           >
             Get Started
@@ -134,7 +134,7 @@ export default function Navbar() {
 
                   <Button
                     nativeButton={false}
-                    render={<Link href="/register" />}
+                    render={<Link href="/signup" />}
                     className="bg-indigo-600 text-white hover:bg-indigo-700"
                   >
                     Get Started
