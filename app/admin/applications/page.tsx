@@ -15,6 +15,7 @@ type Application = {
   role: string;
   status: string;
   dateApplied: string;
+  jobId?: string;
 };
 
 export default function ApplicationsPage() {

@@ -19,12 +19,15 @@ type Application = {
 export default function ApplicationDetailsPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const [application, setApplication] =
     useState<Application | null>(null);
 
   useEffect(() => {
+  const loadApplication = async () => {
+    const { id } = await params;
+
     const storedApplications = localStorage.getItem(
       "careerhubApplications"
     );
@@ -36,7 +39,7 @@ export default function ApplicationDetailsPage({
         JSON.parse(storedApplications);
 
       const foundApplication = applications.find(
-        (item) => item.id === params.id
+        (item) => item.id === id
       );
 
       setApplication(foundApplication || null);
@@ -46,7 +49,10 @@ export default function ApplicationDetailsPage({
         error
       );
     }
-  }, [params.id]);
+  };
+
+  loadApplication();
+}, [params]);
 
   const formatDate = (date: string) => {
     if (!date) return "—";

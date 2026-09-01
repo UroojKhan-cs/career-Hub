@@ -7,6 +7,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Briefcase } from "lucide-react";
 
+const ADMIN_EMAIL = "admin@careerhub.com";
+const ADMIN_PASSWORD = "Admin@123";
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -57,6 +60,31 @@ export default function LoginPage() {
 
     setLoading(true);
     setError("");
+
+    // Check admin credentials
+    if (
+      email.toLowerCase() === ADMIN_EMAIL.toLowerCase() &&
+      password === ADMIN_PASSWORD
+    ) {
+      const adminUser = {
+        id: "admin-1",
+        name: "CareerHub Admin",
+        email: "admin@careerhub.com",
+        password: "Admin@123",
+        role: "admin",
+      };
+
+      localStorage.setItem(
+        "careerhubUser",
+        JSON.stringify(adminUser)
+      );
+
+      setLoading(false);
+
+      window.location.href = "/admin";
+      return;
+    }
+
 
     // Get all registered users
     const storedUsers = localStorage.getItem("careerhubUsers");
@@ -110,7 +138,12 @@ export default function LoginPage() {
     //   return;
     // }
 
-    window.location.href = "/dashboard";
+    if (user.role === "admin") {
+      window.location.href = "/admin";
+    }
+    else {
+      window.location.href = "/dashboard";
+    }
   }
 
   return (

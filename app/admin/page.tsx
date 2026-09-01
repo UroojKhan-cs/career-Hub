@@ -4,6 +4,8 @@
 
 import { useEffect, useState } from "react";
 
+import Link from "next/link";
+
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
 import StatCard from "@/components/admin/StatCard";
@@ -37,8 +39,46 @@ export default function AdminDashboardPage() {
   const [adminName, setAdminName] = useState("Admin");
 
   useEffect(() => {
-    // Registered users
-    const storedUsers = localStorage.getItem("careerhubUsers");
+
+    // =========================
+    // CHECK ADMIN LOGIN
+    // =========================
+
+    const storedUser = localStorage.getItem("careerhubUser");
+
+    if (!storedUser) {
+      window.location.href = "/login";
+      return;
+    }
+
+    try {
+      const currentUser = JSON.parse(storedUser);
+
+      // Only admin can access admin dashboard
+      if (currentUser.role !== "admin") {
+        window.location.href = "/dashboard";
+        return;
+      }
+
+      setAdminName(currentUser.name || "Admin");
+
+    } catch (error) {
+      console.error(
+        "Failed to parse current user:",
+        error
+      );
+
+      window.location.href = "/login";
+      return;
+    }
+
+
+    // =========================
+    // REGISTERED USERS
+    // =========================
+
+    const storedUsers =
+      localStorage.getItem("careerhubUsers");
 
     if (storedUsers) {
       try {
@@ -47,37 +87,32 @@ export default function AdminDashboardPage() {
         if (Array.isArray(parsedUsers)) {
           setUsers(parsedUsers);
         }
+
       } catch (error) {
-        console.error("Failed to parse users:", error);
+        console.error(
+          "Failed to parse users:",
+          error
+        );
       }
     }
 
-    // Current admin user
-    const storedUser = localStorage.getItem("careerhubUser");
 
-    if (storedUser) {
-      try {
-        const currentUser = JSON.parse(storedUser);
+    // =========================
+    // APPLICATIONS
+    // =========================
 
-        setAdminName(currentUser?.name || "Admin");
-      } catch (error) {
-        console.error("Failed to parse current user:", error);
-      }
-    }
-
-    // Applications
     const storedApplications =
       localStorage.getItem("careerhubApplications");
 
     if (storedApplications) {
       try {
-        const parsedApplications = JSON.parse(
-          storedApplications
-        );
+        const parsedApplications =
+          JSON.parse(storedApplications);
 
         if (Array.isArray(parsedApplications)) {
           setApplications(parsedApplications);
         }
+
       } catch (error) {
         console.error(
           "Failed to parse applications:",
@@ -85,7 +120,9 @@ export default function AdminDashboardPage() {
         );
       }
     }
+
   }, []);
+
 
   /*
    * Dashboard Stats
@@ -100,13 +137,22 @@ export default function AdminDashboardPage() {
   // For now all jobs are considered active
   const activeJobs = jobs.length;
 
+
   /*
    * Recent Applications
+   *
+   * Sort by date so newest applications
+   * appear first, then show only 3.
    */
 
   const recentApplications = [...applications]
-    .reverse()
-    .slice(0, 5);
+    .sort(
+      (a, b) =>
+        new Date(b.dateApplied).getTime() -
+        new Date(a.dateApplied).getTime()
+    )
+    .slice(0, 3);
+
 
   /*
    * Generate initials
@@ -121,6 +167,7 @@ export default function AdminDashboardPage() {
       .slice(0, 2)
       .toUpperCase();
   };
+
 
   /*
    * Status badge styles
@@ -148,6 +195,7 @@ export default function AdminDashboardPage() {
     }
   };
 
+
   /*
    * Format Date
    */
@@ -168,8 +216,10 @@ export default function AdminDashboardPage() {
     });
   };
 
+
   return (
     <main className="min-h-screen bg-gray-50">
+
       <div className="flex min-h-screen">
 
         {/* ========================= */}
@@ -178,6 +228,7 @@ export default function AdminDashboardPage() {
 
         <AdminSidebar />
 
+
         {/* ========================= */}
         {/* MAIN CONTENT */}
         {/* ========================= */}
@@ -185,16 +236,21 @@ export default function AdminDashboardPage() {
         <div className="flex min-w-0 flex-1 flex-col">
 
           {/* Header */}
+
           <AdminHeader userName={adminName} />
 
+
           {/* Dashboard Content */}
+
           <section className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+
 
             {/* ========================= */}
             {/* PAGE HEADER */}
             {/* ========================= */}
 
             <div className="mb-7">
+
               <h1 className="text-2xl font-bold tracking-tight text-gray-900">
                 Dashboard Overview
               </h1>
@@ -202,7 +258,9 @@ export default function AdminDashboardPage() {
               <p className="mt-1 text-sm text-gray-500">
                 Monitor your CareerHub platform performance.
               </p>
+
             </div>
+
 
             {/* ========================= */}
             {/* STAT CARDS */}
@@ -244,11 +302,13 @@ export default function AdminDashboardPage() {
 
             </div>
 
+
             {/* ========================= */}
             {/* ANALYTICS */}
             {/* ========================= */}
 
             <div className="mt-6 grid gap-6 xl:grid-cols-3">
+
 
               {/* ========================= */}
               {/* APPLICATIONS OVERVIEW */}
@@ -259,6 +319,7 @@ export default function AdminDashboardPage() {
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 
                   <div>
+
                     <h2 className="text-lg font-semibold text-gray-900">
                       Applications Overview
                     </h2>
@@ -266,12 +327,15 @@ export default function AdminDashboardPage() {
                     <p className="mt-1 text-sm text-gray-500">
                       Application activity over the last 30 days
                     </p>
+
                   </div>
+
 
                   <select
                     defaultValue="30"
                     className="w-fit rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-600 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                   >
+
                     <option value="7">
                       Last 7 Days
                     </option>
@@ -283,9 +347,11 @@ export default function AdminDashboardPage() {
                     <option value="90">
                       Last 90 Days
                     </option>
+
                   </select>
 
                 </div>
+
 
                 {/* Line Chart */}
 
@@ -311,6 +377,7 @@ export default function AdminDashboardPage() {
                       />
                     ))}
 
+
                     {/* Area */}
 
                     <path
@@ -328,6 +395,7 @@ export default function AdminDashboardPage() {
                       "
                       className="fill-indigo-50"
                     />
+
 
                     {/* Main Line */}
 
@@ -347,6 +415,7 @@ export default function AdminDashboardPage() {
                       strokeLinecap="round"
                       className="text-indigo-600"
                     />
+
 
                     {/* Points */}
 
@@ -372,17 +441,21 @@ export default function AdminDashboardPage() {
 
                 </div>
 
+
                 {/* X Axis */}
 
                 <div className="mt-3 flex justify-between text-xs text-gray-400">
+
                   <span>Aug 1</span>
                   <span>Aug 7</span>
                   <span>Aug 14</span>
                   <span>Aug 21</span>
                   <span>Aug 28</span>
+
                 </div>
 
               </div>
+
 
               {/* ========================= */}
               {/* USER GROWTH */}
@@ -391,6 +464,7 @@ export default function AdminDashboardPage() {
               <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
 
                 <div>
+
                   <h2 className="text-lg font-semibold text-gray-900">
                     User Growth
                   </h2>
@@ -398,7 +472,9 @@ export default function AdminDashboardPage() {
                   <p className="mt-1 text-sm text-gray-500">
                     New registered users
                   </p>
+
                 </div>
+
 
                 <div className="mt-5">
 
@@ -411,6 +487,7 @@ export default function AdminDashboardPage() {
                   </p>
 
                 </div>
+
 
                 {/* Weekly Bars */}
 
@@ -434,6 +511,7 @@ export default function AdminDashboardPage() {
                       height: 92,
                     },
                   ].map((item) => (
+
                     <div
                       key={item.label}
                       className="flex h-full flex-1 flex-col justify-end"
@@ -455,6 +533,7 @@ export default function AdminDashboardPage() {
                       </span>
 
                     </div>
+
                   ))}
 
                 </div>
@@ -463,17 +542,20 @@ export default function AdminDashboardPage() {
 
             </div>
 
+
             {/* ========================= */}
             {/* RECENT APPLICATIONS */}
             {/* ========================= */}
 
             <div className="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
 
+
               {/* Table Header */}
 
               <div className="flex items-center justify-between border-b border-gray-100 px-5 py-5 sm:px-6">
 
                 <div>
+
                   <h2 className="text-lg font-semibold text-gray-900">
                     Recent Applications
                   </h2>
@@ -481,16 +563,21 @@ export default function AdminDashboardPage() {
                   <p className="mt-1 text-sm text-gray-500">
                     Latest applications submitted by candidates
                   </p>
+
                 </div>
 
-                <button
-                  type="button"
+
+                {/* View All */}
+
+                <Link
+                  href="/admin/applications"
                   className="text-sm font-semibold text-indigo-600 transition hover:text-indigo-700"
                 >
                   View All
-                </button>
+                </Link>
 
               </div>
+
 
               {/* Table */}
 
@@ -503,7 +590,9 @@ export default function AdminDashboardPage() {
                   <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
 
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+
                       <FileText className="h-6 w-6 text-gray-400" />
+
                     </div>
 
                     <h3 className="mt-4 text-sm font-semibold text-gray-900">
@@ -550,6 +639,7 @@ export default function AdminDashboardPage() {
 
                     </thead>
 
+
                     {/* Table Body */}
 
                     <tbody className="divide-y divide-gray-100">
@@ -570,10 +660,13 @@ export default function AdminDashboardPage() {
                               {/* Avatar */}
 
                               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
+
                                 {getInitials(
                                   application.candidateName
                                 )}
+
                               </div>
+
 
                               {/* Name + Email */}
 
@@ -593,11 +686,13 @@ export default function AdminDashboardPage() {
 
                           </td>
 
+
                           {/* Role */}
 
                           <td className="px-6 py-4 text-sm font-medium text-gray-700">
                             {application.role}
                           </td>
+
 
                           {/* Status */}
 
@@ -613,25 +708,29 @@ export default function AdminDashboardPage() {
 
                           </td>
 
+
                           {/* Date Applied */}
 
                           <td className="px-6 py-4 text-sm text-gray-500">
+
                             {formatDate(
                               application.dateApplied
                             )}
+
                           </td>
+
 
                           {/* Action */}
 
                           <td className="px-6 py-4 text-right">
 
-                            <button
-                              type="button"
+                            <Link
+                              href={`/admin/applications/${application.id}`}
                               aria-label="View application"
                               className="inline-flex rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
                             >
                               <Eye className="h-5 w-5" />
-                            </button>
+                            </Link>
 
                           </td>
 
@@ -654,6 +753,7 @@ export default function AdminDashboardPage() {
         </div>
 
       </div>
+
     </main>
   );
 }
