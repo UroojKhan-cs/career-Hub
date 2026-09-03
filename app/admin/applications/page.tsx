@@ -8,6 +8,8 @@ import { Eye, Search, ChevronDown } from "lucide-react";
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
 
+import AdminTable from "@/components/admin/common/AdminTable";
+
 type Application = {
   id: string;
   candidateName: string;
@@ -271,160 +273,135 @@ export default function ApplicationsPage() {
 
               {/* Table */}
 
-              <div className="overflow-x-auto">
+              {filteredApplications.length === 0 ? (
 
-                {filteredApplications.length === 0 ? (
+                <div className="px-6 py-16 text-center">
 
-                  <div className="px-6 py-16 text-center">
-
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
-
-                      <Search className="h-5 w-5 text-gray-400" />
-
-                    </div>
-
-                    <h3 className="mt-4 text-sm font-semibold text-gray-900">
-                      No applications found
-                    </h3>
-
-                    <p className="mt-1 text-sm text-gray-500">
-                      Try changing your search or status filter.
-                    </p>
-
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+                    <Search className="h-5 w-5 text-gray-400" />
                   </div>
 
-                ) : (
+                  <h3 className="mt-4 text-sm font-semibold text-gray-900">
+                    No applications found
+                  </h3>
 
-                  <table className="w-full min-w-[900px]">
+                  <p className="mt-1 text-sm text-gray-500">
+                    Try changing your search or status filter.
+                  </p>
 
-                    {/* Head */}
+                </div>
 
-                    <thead className="bg-gray-50">
+              ) : (
 
-                      <tr className="border-b border-gray-100">
+                <AdminTable
+                  minWidth="900px"
+                  headers={
+                    <tr className="border-b border-gray-100">
 
-                        <th className="w-[32%] px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
-                          Candidate
-                        </th>
+                      <th className="w-[32%] px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        Candidate
+                      </th>
 
-                        <th className="w-[23%] px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
-                          Role
-                        </th>
+                      <th className="w-[23%] px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        Role
+                      </th>
 
-                        <th className="w-[16%] px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
-                          Status
-                        </th>
+                      <th className="w-[16%] px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        Status
+                      </th>
 
-                        <th className="w-[19%] px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
-                          Date Applied
-                        </th>
+                      <th className="w-[19%] px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        Date Applied
+                      </th>
 
-                        <th className="w-[10%] px-6 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                          Action
-                        </th>
+                      <th className="w-[10%] px-6 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        Action
+                      </th>
 
-                      </tr>
+                    </tr>
+                  }
+                >
 
-                    </thead>
+                  {filteredApplications.map((application) => (
 
-                    {/* Body */}
+                    <tr
+                      key={application.id}
+                      className="transition hover:bg-gray-50"
+                    >
 
-                    <tbody className="divide-y divide-gray-100">
+                      {/* Candidate */}
 
-                      {filteredApplications.map(
-                        (application) => (
+                      <td className="px-6 py-4">
 
-                          <tr
-                            key={application.id}
-                            className="transition hover:bg-gray-50"
-                          >
+                        <div className="flex items-center gap-3">
 
-                            {/* Candidate */}
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
+                            {getInitials(application.candidateName)}
+                          </div>
 
-                            <td className="px-6 py-4">
+                          <div className="min-w-0">
 
-                              <div className="flex items-center gap-3">
+                            <p className="truncate text-sm font-semibold text-gray-900">
+                              {application.candidateName}
+                            </p>
 
-                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
-                                  {getInitials(
-                                    application.candidateName
-                                  )}
-                                </div>
+                            <p className="truncate text-xs text-gray-500">
+                              {application.candidateEmail}
+                            </p>
 
-                                <div className="min-w-0">
+                          </div>
 
-                                  <p className="truncate text-sm font-semibold text-gray-900">
-                                    {
-                                      application.candidateName
-                                    }
-                                  </p>
+                        </div>
 
-                                  <p className="truncate text-xs text-gray-500">
-                                    {
-                                      application.candidateEmail
-                                    }
-                                  </p>
+                      </td>
 
-                                </div>
+                      {/* Role */}
 
-                              </div>
+                      <td className="px-6 py-4 text-sm font-medium text-gray-700">
+                        {application.role}
+                      </td>
 
-                            </td>
+                      {/* Status */}
 
-                            {/* Role */}
+                      <td className="px-6 py-4">
 
-                            <td className="px-6 py-4 text-sm font-medium text-gray-700">
-                              {application.role}
-                            </td>
+                        <span
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
+                            application.status
+                          )}`}
+                        >
+                          {application.status}
+                        </span>
 
-                            {/* Status */}
+                      </td>
 
-                            <td className="px-6 py-4">
+                      {/* Date */}
 
-                              <span
-                                className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
-                                  application.status
-                                )}`}
-                              >
-                                {application.status}
-                              </span>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {formatDate(application.dateApplied)}
+                      </td>
 
-                            </td>
+                      {/* Action */}
 
-                            {/* Date */}
+                      <td className="px-6 py-4 text-right">
 
-                            <td className="px-6 py-4 text-sm text-gray-500">
-                              {formatDate(
-                                application.dateApplied
-                              )}
-                            </td>
+                        <Link
+                          href={`/admin/applications/${application.id}`}
+                          aria-label="View application"
+                          className="inline-flex rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+                        >
+                          <Eye className="h-5 w-5" />
+                        </Link>
 
-                            {/* Action */}
+                      </td>
 
-                            <td className="px-6 py-4 text-right">
+                    </tr>
 
-                              <Link
-                                    href={`/admin/applications/${application.id}`}
-                                    aria-label="View application"
-                                    className="inline-flex rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
-                                >
-                                    <Eye className="h-5 w-5" />
-                                </Link>
+                  ))}
 
-                            </td>
+                </AdminTable>
 
-                          </tr>
-
-                        )
-                      )}
-
-                    </tbody>
-
-                  </table>
-
-                )}
-
-              </div>
+              )}
 
             </div>
 

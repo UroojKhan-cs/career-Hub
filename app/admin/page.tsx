@@ -37,6 +37,7 @@ export default function AdminDashboardPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [adminName, setAdminName] = useState("Admin");
+  const [allJobs, setAllJobs] = useState(jobs);
 
   useEffect(() => {
 
@@ -121,6 +122,34 @@ export default function AdminDashboardPage() {
       }
     }
 
+    // =========================
+    // JOBS
+    // =========================
+
+    const storedJobs = localStorage.getItem("careerhubJobs");
+
+    if (storedJobs) {
+      try {
+        const parsedJobs = JSON.parse(storedJobs);
+
+        if (Array.isArray(parsedJobs)) {
+          const mergedJobs = [...jobs, ...parsedJobs];
+
+          const uniqueJobs = mergedJobs.filter(
+            (job, index, self) =>
+              index ===
+              self.findIndex(
+                (item) => item.id === job.id
+              )
+          );
+
+          setAllJobs(uniqueJobs);
+        }
+      } catch (error) {
+        console.error("Failed to parse jobs:", error);
+      }
+    }
+
   }, []);
 
 
@@ -130,12 +159,9 @@ export default function AdminDashboardPage() {
 
   const totalUsers = users.length;
 
-  const totalJobs = jobs.length;
-
+  const totalJobs = allJobs.length;
   const totalApplications = applications.length;
-
-  // For now all jobs are considered active
-  const activeJobs = jobs.length;
+  const activeJobs = allJobs.length;
 
 
   /*
