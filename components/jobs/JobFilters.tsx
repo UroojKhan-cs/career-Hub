@@ -13,7 +13,6 @@ const jobTypes = [
   "Full-time",
   "Part-time",
   "Contract",
-  "Remote",
 ];
 
 const workModes = [
@@ -34,7 +33,7 @@ const categories = [
   "Design",
   "Product",
   "Marketing",
-  "Sales",
+  "Data Science",
 ];
 
 export default function JobFilters() {

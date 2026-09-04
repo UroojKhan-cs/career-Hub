@@ -316,7 +316,7 @@ export const jobs = [
 
   jobType: "Full-time",
   experience: "Senior Level",
-  category: "Engineering",
+  category: "Data Science",
   workMode: "Hybrid",
   datePosted: "August 14, 2026",
 

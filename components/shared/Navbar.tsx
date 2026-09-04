@@ -1,11 +1,11 @@
 //  components/ shared/ Navbar.tsx
 
-// components/shared/Navbar.tsx
-
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Menu, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,12 +15,29 @@ import {
 } from "@/components/ui/sheet";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Find Jobs", href: "/jobs" },
   { label: "Companies", href: "/companies" },
   { label: "About", href: "/about" },
 ];
 
 export default function Navbar() {
+  const router = useRouter();
+  const [search, setSearch] = useState("");
+
+  function handleSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const query = search.trim();
+
+    if (!query) {
+      router.push("/jobs");
+      return;
+    }
+
+    router.push(`/jobs?search=${encodeURIComponent(query)}`);
+  }
+
   return (
     <header className="border-b bg-blue-50">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -37,17 +54,30 @@ export default function Navbar() {
           </Link>
 
           {/* Navbar Search */}
-          <div className="hidden w-64 lg:flex xl:w-80">
+          <form
+            onSubmit={handleSearch}
+            className="hidden w-64 lg:flex xl:w-80"
+          >
             <div className="ml-4 flex w-full items-center gap-2 rounded-lg border bg-white px-3 py-2">
-              <Search className="h-4 w-4 shrink-0 text-gray-400" />
+
+              <button
+                type="submit"
+                aria-label="Search jobs"
+                className="shrink-0 text-gray-400 transition hover:text-indigo-600"
+              >
+                <Search className="h-4 w-4" />
+              </button>
 
               <input
                 type="text"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search jobs, companies..."
                 className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
               />
+
             </div>
-          </div>
+          </form>
 
         </div>
 
@@ -78,7 +108,6 @@ export default function Navbar() {
           <Button
             nativeButton={false}
             render={<Link href="/signup" />}
-            className="bg-indigo-600 text-white hover:bg-indigo-700"
           >
             Get Started
           </Button>
@@ -89,7 +118,6 @@ export default function Navbar() {
         <div className="lg:hidden">
 
           <Sheet>
-
             <SheetTrigger
               render={
                 <Button
@@ -135,7 +163,6 @@ export default function Navbar() {
                   <Button
                     nativeButton={false}
                     render={<Link href="/signup" />}
-                    className="bg-indigo-600 text-white hover:bg-indigo-700"
                   >
                     Get Started
                   </Button>
@@ -144,7 +171,6 @@ export default function Navbar() {
 
               </div>
             </SheetContent>
-
           </Sheet>
 
         </div>

@@ -29,6 +29,10 @@ export default function JobsContent() {
   const selectedExperience = searchParams.get("experience") || "";
   const selectedCategory = searchParams.get("category") || "";
 
+  const selectedCompany = searchParams.get("company") || "";
+
+  const searchQuery = searchParams.get("search") || "";
+
   // =========================
   // LOAD JOBS
   // =========================
@@ -61,6 +65,16 @@ export default function JobsContent() {
     }
   }, []);
 
+  const categoryName = selectedCategory
+    ? selectedCategory
+        .split("-")
+        .map(
+          (word) =>
+            word.charAt(0).toUpperCase() + word.slice(1)
+        )
+        .join(" ")
+    : "";
+
   // =========================
   // FILTER JOBS
   // =========================
@@ -90,9 +104,34 @@ export default function JobsContent() {
 
   // Category
   if (selectedCategory) {
+    const category = selectedCategory
+      .replace(/-/g, " ")
+      .toLowerCase();
+
     filteredJobs = filteredJobs.filter(
-      (job) => job.category === selectedCategory
+      (job) =>
+        job.category.toLowerCase() === category
     );
+  }
+
+  // company
+  if (selectedCompany) {
+    filteredJobs = filteredJobs.filter(
+      (job) => job.company === selectedCompany
+    );
+  }
+
+  // Search
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+
+    filteredJobs = filteredJobs.filter((job) => {
+      return (
+        job.title.toLowerCase().includes(query) ||
+        job.company.toLowerCase().includes(query) ||
+        job.location.toLowerCase().includes(query)
+      );
+    });
   }
 
   // =========================
@@ -153,7 +192,9 @@ export default function JobsContent() {
         <div className="mb-6 flex items-center justify-between">
 
           <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-            Software Engineer Jobs
+            {categoryName
+              ? `${categoryName} Jobs`
+              : "All Jobs"}
           </h1>
 
           <span className="text-sm text-gray-500">
